@@ -1,18 +1,16 @@
-FROM php:8.2-cli
+FROM php:8.2-cli-alpine
 
 # Instalar extensiones necesarias
 RUN docker-php-ext-install mysqli pdo pdo_mysql
 
-# Crear directorio de trabajo
-WORKDIR /var/www
+# Directorio de trabajo
+WORKDIR /app
 
 # Copiar archivos del proyecto
 COPY . .
 
-# Dar permisos (importante en Railway/Linux)
-RUN chmod -R 755 /var/www
-
-# Exponer puerto dinámico de Railway
+# Exponer puerto
 EXPOSE 8080
 
-# Usar el puerto que Railway
+# Iniciar servidor usando puerto de Railway
+CMD php -S 0.0.0.0:${PORT:-8080} -t public
