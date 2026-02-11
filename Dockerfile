@@ -1,10 +1,14 @@
-FROM php:8.2-apache
+FROM php:8.2-cli
 
+# Instalar extensiones necesarias
 RUN docker-php-ext-install mysqli pdo pdo_mysql
-RUN a2enmod rewrite
 
-COPY . /var/www/html/
+# Copiar proyecto
+WORKDIR /app
+COPY . .
 
-RUN sed -i 's!/var/www/html!/var/www/html/public!g' /etc/apache2/sites-available/000-default.conf
+# Exponer puerto dinámico de Railway
+EXPOSE 8080
 
-EXPOSE 80
+# Iniciar servidor PHP
+CMD php -S 0.0.0.0:$PORT -t public
