@@ -1,19 +1,20 @@
 <?php
-function conectarDB() {
-    // Leer variables de entorno que Railway provee
-    $DB_HOST = getenv('MYSQLHOST') ?: 'localhost';
-    $DB_PORT = getenv('MYSQLPORT') ?: 3306;
-    $DB_USER = getenv('MYSQLUSER') ?: 'root';
-    $DB_PASS = getenv('MYSQLPASSWORD') ?: '';
-    $DB_NAME = getenv('MYSQLDATABASE') ?: 'clinica';
 
-    try {
-        $dsn = "mysql:host=$DB_HOST;port=$DB_PORT;dbname=$DB_NAME;charset=utf8";
-        $pdo = new PDO($dsn, $DB_USER, $DB_PASS);
-        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        return $pdo;
-    } catch (PDOException $e) {
-        die("Error BD: " . $e->getMessage());
+class Database {
+
+    public static function conectarDB() {
+
+        $host = getenv("DB_HOST") ?: "localhost";
+        $db   = getenv("DB_DATABASE") ?: "clinica";
+        $user = getenv("DB_USERNAME") ?: "clinica";
+        $pass = getenv("DB_PASSWORD") ?: "Proyecto2024";
+
+        try {
+            $pdo = new PDO("mysql:host=$host;dbname=$db;charset=utf8", $user, $pass);
+            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            return $pdo;
+        } catch (PDOException $e) {
+            die("Error de conexión: " . $e->getMessage());
+        }
     }
 }
-?>
