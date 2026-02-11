@@ -1,20 +1,18 @@
 <?php
-$url = getenv("MYSQL_URL");
 
-$parts = parse_url($url);
-
-$host = $parts['host'];
-$port = $parts['port'];
-$user = $parts['user'];
-$pass = $parts['pass'];
-$db   = ltrim($parts['path'], '/');
-
-$dsn = "mysql:host=$host;port=$port;dbname=$db;charset=utf8mb4";
+$host = $_ENV['MYSQLHOST'];
+$port = $_ENV['MYSQLPORT'];
+$user = $_ENV['MYSQLUSER'];
+$pass = $_ENV['MYSQLPASSWORD'];
+$db   = $_ENV['MYSQLDATABASE'];
 
 try {
-    $pdo = new PDO($dsn, $user, $pass, [
-        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
-    ]);
+    $pdo = new PDO(
+        "mysql:host=$host;port=$port;dbname=$db;charset=utf8",
+        $user,
+        $pass
+    );
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch (PDOException $e) {
     die("Error BD: " . $e->getMessage());
 }
