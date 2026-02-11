@@ -1,20 +1,16 @@
 <?php
-function conectarDB() {
-    $host = "localhost";
-    $port = "3307";
-    $db   = "clinica";
-    $user = "clinica";
-    $pass = "Proyecto2025";
+$host = getenv("MYSQLHOST");
+$port = getenv("MYSQLPORT");
+$db   = getenv("MYSQLDATABASE");
+$user = getenv("MYSQLUSER");
+$pass = getenv("MYSQLPASSWORD");
 
-    try {
-        return new PDO(
-            "mysql:host=$host;port=$port;dbname=$db;charset=utf8",
-            $user,
-            $pass,
-            [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
-        );
-    } catch (PDOException $e) {
-        die("Error BD: " . $e->getMessage());
-    }
+$dsn = "mysql:host=$host;port=$port;dbname=$db;charset=utf8mb4";
+
+try {
+    $pdo = new PDO($dsn, $user, $pass, [
+        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
+    ]);
+} catch (PDOException $e) {
+    die("Error BD: " . $e->getMessage());
 }
-?>
